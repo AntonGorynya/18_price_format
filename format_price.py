@@ -1,9 +1,12 @@
 import argparse
+import re
 
 
 def format_price(price):
     price = str(price)
-    point_position = price.find('.')
+    point_position = -1
+    if re.search(r'\S*([,\.])\S*', price):
+        point_position = re.search(r'\S*([,\.])\S*', price).start(1)
     if point_position+1:
         whole_part = price[:point_position]
         frac_part = price[point_position + 1:][:2].rstrip('0')
