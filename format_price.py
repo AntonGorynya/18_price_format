@@ -1,4 +1,5 @@
 import argparse
+import itertools
 import re
 
 
@@ -6,6 +7,7 @@ def format_price(price):
     price = str(price)
     step = 3
     fractal_len = 2
+    start_position = 2
     point_position = -1
     if re.search(r'\S*([,\.])\S*', price):
         point_position = re.search(r'\S*(?P<pp>[,\.])\S*', price).start('pp')
@@ -15,13 +17,13 @@ def format_price(price):
     else:
         whole_part = price
         frac_part = None
-    out_price = ''
-    for position, symbol in enumerate(whole_part[::-1]):
-        if position % step != 0:
-            out_price += symbol
-        else:
-            out_price += ' {}'.format(symbol)
-    whole_part = out_price[::-1].strip()
+    whole_part = list(whole_part)[::-1]
+    for position in itertools.islice(itertools.count(),
+                                     start_position,
+                                     len(whole_part)-1,
+                                     step):
+        whole_part[position] = ' {}'.format(whole_part[position])
+    whole_part = ''.join(whole_part[::-1])
     if frac_part:
         return '{}.{}'.format(whole_part, frac_part)
     else:

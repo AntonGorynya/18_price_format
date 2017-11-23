@@ -19,10 +19,6 @@ class PriceTest(unittest.TestCase):
         price = format_price('1234,55')
         self.assertEqual(price, '1 234.55')
 
-    def test_wrong(self):
-        price = format_price('qwerty')
-        self.assertEqual(price, 'qwe rty')
-
 
 if __name__ == '__main__':
     unittest.main()
